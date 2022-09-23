@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.graphics.Rect;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -24,15 +25,26 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.opencsv.CSVReader;
+
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapReverseGeoCoder;
 import net.daum.mf.map.api.MapView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapReverseGeoCoder.ReverseGeoCodingResultListener
 {
     private static final String LOG_TAG = "MainActivity";
     private MapView mMapView;
+
+    private final String FILENAME = "output.csv";
 
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
@@ -57,16 +69,33 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         //마커
         MapPOIItem marker = new MapPOIItem();
 
-        for(double i=0;i<10;i++)
+        AssetManager assetManager = this.getAssets();
+        InputStream inputStream;
+        try
         {
-            MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(35.898054+i/10, 128.544296+i/10);
-            marker.setItemName("Default Marker"+ i);
-            marker.setTag(0);
-            marker.setMapPoint(mapPoint);
-            marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
-            marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커// 모양.
+            inputStream = assetManager.open("output.csv");
+            CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
+            List<String[]> dataList = reader.readAll();
 
-            mMapView.addPOIItem(marker);
+            for (String[] data : dataList)
+            {
+                if(data[0].equals("")) continue;
+                if(Integer.parseInt(data[0])>=2)//index
+                {
+                    MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(Double.parseDouble(data[8]), Double.parseDouble(data[7]));
+                    marker.setItemName(data[2]);
+                    marker.setTag(0);
+                    marker.setMapPoint(mapPoint);
+                    marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+                    marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커// 모양.
+
+                    mMapView.addPOIItem(marker);
+                    Log.d("jhdroid_test", "data : " + Arrays.deepToString(data));
+                }
+            }
+        } catch (IOException e)
+        {
+            e.printStackTrace();
         }
 
         //검색
