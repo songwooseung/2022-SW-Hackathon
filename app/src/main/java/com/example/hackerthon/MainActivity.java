@@ -98,6 +98,15 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             e.printStackTrace();
         }
 
+        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(35.9439419883189, 128.562834434994);
+        marker.setItemName("TEST");
+        marker.setTag(0);
+        marker.setMapPoint(mapPoint);
+        marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커// 모양.
+
+        mMapView.addPOIItem(marker);
+
         //검색
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         EditText text = findViewById(R.id.searchData);

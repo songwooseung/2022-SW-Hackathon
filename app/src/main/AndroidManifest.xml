@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.hackerthon">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -22,7 +22,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
-
         <activity
             android:name=".initActivity"
             android:exported="true"
@@ -30,10 +29,10 @@
             android:theme="@style/Theme.Hackerthon.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- 네이티브 앱 키 추가 -->
+        </activity> <!-- 네이티브 앱 키 추가 -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="7235459b1d1f233eaaa5e8dbc3e27974" />
