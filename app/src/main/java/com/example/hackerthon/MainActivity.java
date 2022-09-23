@@ -2,23 +2,35 @@ package com.example.hackerthon;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapReverseGeoCoder;
 import net.daum.mf.map.api.MapView;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapReverseGeoCoder.ReverseGeoCodingResultListener
 {
@@ -40,15 +52,12 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         mMapView.setCurrentLocationEventListener(this);
 
         if (!checkLocationServicesStatus())
-        {
             showDialogForLocationServiceSetting();
-        }
         else
-        {
             checkRunTimePermission();
-        }
         //mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
 
+        //마커
         MapPOIItem marker = new MapPOIItem();
 
         //맵 포인트 위도경도 설정
@@ -60,6 +69,48 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
 
         mMapView.addPOIItem(marker);
+
+        //검색
+        final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        Button btn = findViewById(R.id.button);
+        btn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                EditText text = findViewById(R.id.searchData);
+                imm.hideSoftInputFromWindow(text.getWindowToken(),0);
+                Toast.makeText(MainActivity.this, text.getText(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // 전체화면인 DrawerLayout 객체 참조
+        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+
+        // Drawer 화면(뷰) 객체 참조
+        final View drawerView = (View) findViewById(R.id.drawer);
+
+
+        // 드로어 화면을 열고 닫을 버튼 객체 참조
+        Button btnOpenDrawer = (Button) findViewById(R.id.btn_OpenDrawer);
+        Button btnCloseDrawer = (Button) findViewById(R.id.btn_CloseDrawer);
+
+        // 드로어 여는 버튼 리스너
+        btnOpenDrawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(drawerView);
+            }
+        });
+
+
+        // 드로어 닫는 버튼 리스너
+        btnCloseDrawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.closeDrawer(drawerView);
+            }
+        });
     }
 
     //Intent intent = new Intent(this, StartActivity.class);
@@ -147,9 +198,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                     finish();
                 }
                 else
-                {
                     Toast.makeText(MainActivity.this, "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ", Toast.LENGTH_LONG).show();
-                }
             }
         }
     }
@@ -161,7 +210,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         int hasFineLocationPermission = ContextCompat.checkSelfPermission(
                 MainActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
-
 
         if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED)
         {

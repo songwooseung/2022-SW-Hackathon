@@ -1,14 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:context=".MainActivity">
 
-    <net.daum.mf.map.api.MapView
-        android:id="@+id/map_view"
+    <!--배경이 될 Layout-->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <net.daum.mf.map.api.MapView
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="31dp"
+            android:layout_marginEnd="23dp"
+            android:text="Button" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="152dp"
+            android:layout_marginTop="45dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/searchData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="검색어를 입력하세요" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_OpenDrawer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="42dp"
+            android:text="Button" />
 
 
+    </RelativeLayout>
 
-</RelativeLayout>
+    <!--드로어 화면이 될 Layout-->
+    <RelativeLayout
+        android:id="@+id/drawer"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:background="#ffffff"
+        android:layout_gravity="start">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="23dp"
+            android:text="드로어가 될 화면"
+            android:textColor="#f70"
+            android:textSize="24dp" />
+
+        <Button
+            android:id="@+id/btn_CloseDrawer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:text="드로어 닫기" />
+
+    </RelativeLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>
