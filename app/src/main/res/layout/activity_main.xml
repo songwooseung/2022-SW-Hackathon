@@ -44,7 +44,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/btn_OpenDrawer"
+            android:id="@+id/btn_OpenDrawerLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -56,9 +56,9 @@
 
     </RelativeLayout>
 
-    <!--드로어 화면이 될 Layout-->
+    <!--왼쪽 드로어 화면이 될 Layout-->
     <RelativeLayout
-        android:id="@+id/drawer"
+        android:id="@+id/drawerLeft"
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
@@ -76,7 +76,7 @@
             android:textSize="24dp" />
 
         <Button
-            android:id="@+id/btn_CloseDrawer"
+            android:id="@+id/btn_CloseDrawerLeft"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -85,7 +85,7 @@
             android:text="드로어 닫기" />
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/select1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -95,7 +95,7 @@
             android:text="범주 1" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/select2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -103,7 +103,6 @@
             android:layout_marginStart="108dp"
             android:layout_marginTop="274dp"
             android:text="범주 2" />
-
 
     </RelativeLayout>
 
