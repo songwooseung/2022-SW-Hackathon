@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -60,26 +62,28 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         //마커
         MapPOIItem marker = new MapPOIItem();
 
-        //맵 포인트 위도경도 설정
-        MapPoint mapPoint1 = MapPoint.mapPointWithGeoCoord(35.898054, 128.544296);
-        marker.setItemName("Default Marker");
-        marker.setTag(0);
-        marker.setMapPoint(mapPoint1);
-        marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
-        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+        for(double i=0;i<10;i++)
+        {
+            MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(35.898054+i/10, 128.544296+i/10);
+            marker.setItemName("Default Marker"+ i);
+            marker.setTag(0);
+            marker.setMapPoint(mapPoint);
+            marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+            marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커// 모양.
 
-        mMapView.addPOIItem(marker);
+            mMapView.addPOIItem(marker);
+        }
 
         //검색
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        EditText text = findViewById(R.id.searchData);
         Button btn = findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                EditText text = findViewById(R.id.searchData);
-                imm.hideSoftInputFromWindow(text.getWindowToken(),0);
+                imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
                 Toast.makeText(MainActivity.this, text.getText(), Toast.LENGTH_LONG).show();
             }
         });
@@ -90,27 +94,51 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         // Drawer 화면(뷰) 객체 참조
         final View drawerView = (View) findViewById(R.id.drawer);
 
-
         // 드로어 화면을 열고 닫을 버튼 객체 참조
         Button btnOpenDrawer = (Button) findViewById(R.id.btn_OpenDrawer);
         Button btnCloseDrawer = (Button) findViewById(R.id.btn_CloseDrawer);
 
         // 드로어 여는 버튼 리스너
-        btnOpenDrawer.setOnClickListener(new View.OnClickListener() {
+        btnOpenDrawer.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
+                imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
                 drawerLayout.openDrawer(drawerView);
             }
         });
 
 
         // 드로어 닫는 버튼 리스너
-        btnCloseDrawer.setOnClickListener(new View.OnClickListener() {
+        btnCloseDrawer.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
+                imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
                 drawerLayout.closeDrawer(drawerView);
             }
         });
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev)
+    {
+        View focusView = getCurrentFocus();
+        if (focusView != null)
+        {
+            Rect rect = new Rect();
+            focusView.getGlobalVisibleRect(rect);
+            int x = (int) ev.getX(), y = (int) ev.getY();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (!rect.contains(x, y))
+            {
+                if (imm != null) imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
+                focusView.clearFocus();
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     //Intent intent = new Intent(this, StartActivity.class);

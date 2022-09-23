@@ -84,6 +84,27 @@
             android:layout_marginBottom="10dp"
             android:text="드로어 닫기" />
 
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="95dp"
+            android:layout_marginTop="163dp"
+            android:text="범주 1" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="108dp"
+            android:layout_marginTop="274dp"
+            android:text="범주 2" />
+
+
     </RelativeLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
