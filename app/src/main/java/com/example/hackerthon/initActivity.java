@@ -1,25 +1,42 @@
 package com.example.hackerthon;
 
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.Button;
+
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.opencsv.CSVReader;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 public class initActivity extends AppCompatActivity
 {
     LinearLayout layout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        layout = findViewById(R.id.layout);
+
+        ImageView startIMAGE = (ImageView) findViewById(R.id.startImage);
+        Glide.with(this).load(R.raw.open).into(startIMAGE);
+        //layout = findViewById(R.id.layout);
+
+        AssetManager assetManager = this.getAssets();
+        List<String[]> dataList = CSVGetter(assetManager);
+
+        Intent intent = new Intent(initActivity.this, MainActivity.class); //화면 전환
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable()
@@ -27,23 +44,34 @@ public class initActivity extends AppCompatActivity
             @Override
             public void run()
             {
-                Intent intent = new Intent(initActivity.this, MainActivity.class); //화면 전환
+                intent.putExtra("size", dataList.size());
+                for (int i = 0; i < dataList.size(); i++)
+                {
+                    intent.putExtra(Integer.toString(i), dataList.get(i));
+                }
                 startActivity(intent);
                 finish();
             }
-        }, 2000); //딜레이 타임 조절
-        setSize();
+        }, 5000); //딜레이 타임 조절*/
+
+
     }
 
-    private void setSize() {
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        int widthPixels = metrics.widthPixels;
-        int heightPixels = widthPixels * 3382/1480;
+    public static List<String[]> CSVGetter(AssetManager manager)
+    {
+        List<String[]> dataList;
+        try
+        {
+            InputStream inputStream = manager.open("output.csv");
+            CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
+            dataList = reader.readAll();
+        } catch (IOException e)
+        {
+            dataList = new ArrayList<String[]>();
+            dataList.add(new String[]{"error", "-1"});
+            e.printStackTrace();
+        }
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthPixels,heightPixels);
-
-        params.gravity = Gravity.CENTER;
-
-        layout.setLayoutParams(params);
+        return dataList;
     }
 }

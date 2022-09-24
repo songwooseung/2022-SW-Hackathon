@@ -61,9 +61,9 @@
         android:id="@+id/drawerLeft"
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
+        android:layout_gravity="start"
         android:background="#ffffff"
-        android:layout_gravity="start">
+        android:gravity="center_horizontal">
 
         <TextView
             android:layout_width="wrap_content"
@@ -103,7 +103,8 @@
             android:layout_marginStart="108dp"
             android:layout_marginTop="274dp"
             android:text="범주 2" />
-
     </RelativeLayout>
+
+
 
 </androidx.drawerlayout.widget.DrawerLayout>
