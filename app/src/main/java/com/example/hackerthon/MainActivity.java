@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -169,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                     }
                 }
                 if (foundList.size() == 0)
-                    Toast.makeText(MainActivity.this, "없습니당", Toast.LENGTH_LONG).show();//alert
+                    Toast.makeText(MainActivity.this, "검색어와 일치하는 가맹점이 없습니다", Toast.LENGTH_LONG).show();//alert
                 else
                 {
                     for (String[] s : foundList)
@@ -196,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 }
             }
         });
+
 
         //왼쪽
         // 전체화면인 DrawerLayout 객체 참조
@@ -236,30 +238,15 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         }
     }
 
-    public void Clickrestaurant(View v)
-    {
+    public void Clickrestaurant(View v) {}
 
-    }
+    public void ClickNear(View v) {}
 
-    public void ClickNear(View v)
-    {
+    public void ClickMart(View v) {}
 
-    }
+    public void ClickFacility(View v) {}
 
-    public void ClickMart(View v)
-    {
-
-    }
-
-    public void ClickFacility(View v)
-    {
-
-    }
-
-    public void Clickguitar(View v)
-    {
-
-    }
+    public void Clickguitar(View v) {}
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev)

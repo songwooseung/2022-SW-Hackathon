@@ -83,7 +83,7 @@
         android:gravity="left">
 
         <Button
-            android:id="@+id/select1"
+            android:id="@+id/food"
             android:layout_width="120dp"
             android:layout_height="50dp"
             android:layout_alignParentStart="true"
@@ -103,10 +103,10 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/select2"
+            android:id="@+id/convinience"
             android:layout_width="120dp"
             android:layout_height="50dp"
-            android:layout_below="@+id/select1"
+            android:layout_below="@+id/food"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="20dp"
@@ -124,10 +124,10 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/aroundMe"
             android:layout_width="120dp"
             android:layout_height="50dp"
-            android:layout_below="@+id/select3"
+            android:layout_below="@+id/guitar"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="20dp"
@@ -145,10 +145,10 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/select"
+            android:id="@+id/market"
             android:layout_width="120dp"
             android:layout_height="50dp"
-            android:layout_below="@+id/select2"
+            android:layout_below="@+id/convinience"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="20dp"
@@ -166,10 +166,10 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/select3"
+            android:id="@+id/guitar"
             android:layout_width="120dp"
             android:layout_height="50dp"
-            android:layout_below="@+id/select"
+            android:layout_below="@+id/market"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="20dp"
