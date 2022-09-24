@@ -68,7 +68,6 @@
             android:layout_marginBottom="29dp"
             android:text="Button" />
 
-
     </RelativeLayout>
 
     <!--왼쪽 드로어 화면이 될 Layout-->
@@ -79,6 +78,13 @@
         android:layout_gravity="start"
         android:background="#E2E9FD"
         android:gravity="left">
+
+        <Button
+            android:id="@+id/btn_CloseDrawerLeft"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="드로어 닫기" />
 
         <Button
             android:id="@+id/select1"
