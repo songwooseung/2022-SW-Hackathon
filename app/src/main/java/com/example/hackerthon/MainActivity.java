@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private static final String FILE_Food = "Food.csv";
     private static final String FILE_Guitar = "Guitar.csv";
     private static final String FILE_Mart = "Mart.csv";
+    private static final String FILE_Merge = "Merge.csv";
 
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
@@ -66,23 +67,16 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ArrayList<String[]> dataList_convin = new ArrayList<String[]>();
 
-        //int Size = getIntent().getIntExtra("size",0);
-        /*
-        for(int i=0;i<Size;i++)
-        {
-            dataList.add(getIntent().getExtras().getStringArray(Integer.toString(i)));
-        }*/
+        AssetManager assetManager = this.getAssets();
+        MapPOIItem marker = new MapPOIItem();
 
-        /*ListView listView = findViewById(R.id.listView);
-        List<String> lst = new ArrayList<String>();
-        lst.add("사과");
-        lst.add(" 딸기");
+        List<String[]> dataList_Convin = CSVGetter(assetManager,FILE_CONVIN);
+        List<String[]> dataList_Food = CSVGetter(assetManager,FILE_Food);
+        List<String[]> dataList_Guitar = CSVGetter(assetManager,FILE_Guitar);
+        List<String[]> dataList_Mart = CSVGetter(assetManager,FILE_Mart);
+        List<String[]> dataList_Merge = CSVGetter(assetManager,FILE_Merge);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.right_listview, lst);
-        listView.setAdapter(adapter);
-*/
         //mapview
         mMapView = new MapView(this);
         ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
@@ -101,42 +95,28 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         //mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
 
         //마커
-        MapPOIItem marker = new MapPOIItem();
-
-        AssetManager assetManager = this.getAssets();
-        InputStream inputStream;
-        try
-        {
-            inputStream = assetManager.open("merge.csv");
-            CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
-            List<String[]> dataList = reader.readAll();
-
-            for (String[] data : dataList)
+        SetMarker(marker, dataList_Mart);
+        /*for (String[] data : dataList_Guitar) {
+            if (data[8].equals("y")) continue;
+            if (data[0].equals("")) break;
+            if (Integer.parseInt(data[0]) >= 2)//index
             {
-                if (data[8].equals("y")) continue;
-                if (data[0].equals("")) break;
-                if (Integer.parseInt(data[0]) >= 2)//index
-                {
-                    MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(Double.parseDouble(data[8]), Double.parseDouble(data[7]));
-                    marker.setItemName(data[2]);
-                    marker.setTag(1);
-                    marker.setMapPoint(mapPoint);
-                    marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 사설 마커 모양 - 기본
-                    marker.setCustomImageResourceId(R.drawable.mar); // 마커 이미지.
-                    marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-                    //marker.setCustomImageAnchor(0.5f, 0.7f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
-                    marker.setSelectedMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커// 모양.
-                    marker.setCustomSelectedImageResourceId(R.drawable.mar2); // 마커 이미지.
-                    //marker.setCustomSelec(0.5f, 0.7f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+                MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(Double.parseDouble(data[8]), Double.parseDouble(data[7]));
+                marker.setItemName(data[2]);
+                marker.setTag(1);
+                marker.setMapPoint(mapPoint);
+                marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 사설 마커 모양 - 기본
+                marker.setCustomImageResourceId(R.drawable.mar); // 마커 이미지.
+                marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+                //marker.setCustomImageAnchor(0.5f, 0.7f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+                marker.setSelectedMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커// 모양.
+                marker.setCustomSelectedImageResourceId(R.drawable.mar2); // 마커 이미지.
+                //marker.setCustomSelec(0.5f, 0.7f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
 
-                    mMapView.addPOIItem(marker);
-                    Log.d("jhdroid_test", "data : " + Arrays.deepToString(data));
-                }
+                mMapView.addPOIItem(marker);
+                Log.d("jhdroid_test", "data : " + Arrays.deepToString(data));
             }
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        }*/
 
         //검색
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -417,7 +397,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     public void onMapViewZoomLevelChanged(MapView mapView, int i)
     {
         Log.d("setzoomtest", Integer.toString(mMapView.getZoomLevel()));
-        if (mMapView.getZoomLevel() >= 3)
+        if (mMapView.getZoomLevel() > 3)
         {
             mMapView.setZoomLevel(3, false);
             mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
@@ -473,5 +453,30 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         }
 
         return dataList;
+    }
+
+    public void SetMarker(MapPOIItem marker, List<String[]> dataList){
+        //마커
+        for (String[] data : dataList) {
+            if (data[8].equals("y")) continue;
+            if (data[0].equals("")) break;
+            if (Integer.parseInt(data[0]) >= 2)//index
+            {
+                MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(Double.parseDouble(data[8]), Double.parseDouble(data[7]));
+                marker.setItemName(data[2]);
+                marker.setTag(1);
+                marker.setMapPoint(mapPoint);
+                marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 사설 마커 모양 - 기본
+                marker.setCustomImageResourceId(R.drawable.mar); // 마커 이미지.
+                marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+                //marker.setCustomImageAnchor(0.5f, 0.7f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+                marker.setSelectedMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커// 모양.
+                marker.setCustomSelectedImageResourceId(R.drawable.mar2); // 마커 이미지.
+                //marker.setCustomSelec(0.5f, 0.7f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+
+                mMapView.addPOIItem(marker);
+                Log.d("jhdroid_test", "data : " + Arrays.deepToString(data));
+            }
+        }
     }
 }
