@@ -16,11 +16,7 @@
         <net.daum.mf.map.api.MapView
             android:id="@+id/map_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="0dp" />
+            android:layout_height="match_parent" />
 
         <Button
             android:id="@+id/button"
@@ -77,7 +73,7 @@
             android:layout_marginTop="23dp"
             android:text="드로어가 될 화면"
             android:textColor="#f70"
-            android:textSize="24sp" />
+            android:textSize="24dp" />
 
         <Button
             android:id="@+id/btn_CloseDrawerLeft"
