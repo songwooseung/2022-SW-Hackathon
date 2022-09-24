@@ -9,71 +9,69 @@
     tools:context=".MainActivity">
 
     <!--배경이 될 Layout-->
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/map_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="393dp"
-            android:background="#F8FEFF" />
-
         <Button
             android:id="@+id/buttonforSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="71dp"
+            android:layout_height="91dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="31dp"
-            android:layout_marginEnd="23dp"
-            android:text="Button" />
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="2dp"
+            android:background="#00ff0000"
+            android:drawableBottom="@drawable/arrowxml"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
+            android:layout_width="248dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="152dp"
-            android:layout_marginTop="50dp">
+            android:layout_marginStart="85dp"
+            android:layout_marginTop="45dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/searchData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="#000000"
                 android:hint="검색어를 입력하세요"
                 tools:ignore="TouchTargetSizeCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
+
+
+
         <Button
             android:id="@+id/btn_OpenDrawerLeft"
-            android:layout_width="wrap_content"
+            android:layout_width="62dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="42dp"
-            android:text="left 열기" />
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="54dp"
+            android:background="#00ff0000"
+            android:backgroundTint="#00ff0000"
+            android:drawableTop="@drawable/filxml"
+            tools:ignore="SpeakableTextPresentCheck" />
 
-        <Button
-            android:id="@+id/btn_OpenDrawerRight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <RelativeLayout
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="29dp"
-            android:text="Button" />
+            android:layout_marginStart="-238dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="-1dp"
+            android:background="#F8FEFF">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onButton1Clicked"
-            android:text="Button" />
+        </RelativeLayout>
 
     </RelativeLayout>
 
@@ -87,22 +85,14 @@
         android:gravity="left">
 
         <Button
-            android:id="@+id/btn_CloseDrawerLeft"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="드로어 닫기" />
-
-        <Button
             android:id="@+id/select1"
             android:layout_width="120dp"
             android:layout_height="50dp"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="200dp"
-            android:layout_marginEnd="22dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="90dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/button_round"
             android:drawableLeft="@drawable/restaurantsize"
             android:drawablePadding="20dp"
@@ -125,11 +115,11 @@
             android:layout_marginTop="40dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/button_round"
-            android:drawableLeft="@drawable/cafesize"
+            android:drawableLeft="@drawable/buildingsize"
             android:drawablePadding="20dp"
-            android:onClick="ClickCafe"
+            android:onClick="ClickFacility"
             android:paddingLeft="30dp"
-            android:text="카페"
+            android:text="편의시설"
             android:textAlignment="textStart"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#000000"
@@ -146,11 +136,11 @@
             android:layout_marginTop="40dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/button_round"
-            android:drawableLeft="@drawable/guitarsize"
+            android:drawableLeft="@drawable/nearxml"
             android:drawablePadding="20dp"
-            android:onClick="Clickguitar"
+            android:onClick="ClickNear"
             android:paddingLeft="30dp"
-            android:text="기타"
+            android:text="내 주변"
             android:textAlignment="textStart"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#000000"
@@ -190,43 +180,26 @@
             android:background="@drawable/button_round"
             android:drawableLeft="@drawable/buildingsize"
             android:drawablePadding="20dp"
-            android:onClick="ClickFacility"
+            android:onClick="Clickguitar"
             android:paddingLeft="30dp"
-            android:text="편의시설"
+            android:text="기타"
             android:textAlignment="textStart"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#000000"
             android:textStyle="bold" />
 
-    </RelativeLayout>
-
-    <!--오른쪽 드로어 화면이 될 Layout-->
-    <RelativeLayout
-        android:id="@+id/drawerRight"
-        android:layout_width="250dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="right"
-        android:background="#ffffff"
-        android:gravity="right">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="23dp"
-            android:text="드로어가 될 화면"
-            android:textColor="#f70"
-            android:textSize="24dp" />
-
         <Button
-            android:id="@+id/btn_CloseDrawerRight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
-            android:text="드로어 닫기" />
+            android:id="@+id/button"
+            android:layout_width="108dp"
+            android:layout_height="105dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="600dp"
+            android:layout_marginEnd="303dp"
+            android:layout_marginBottom="50dp"
+            android:background="#00ff0000"
+            android:drawableLeft="@drawable/shopxml"
+            android:onClick="onButton1Clicked"
+            android:text="IM샵 " />
 
     </RelativeLayout>
 

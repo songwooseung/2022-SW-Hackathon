@@ -123,12 +123,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         drawerLayout.setScrimColor(Color.TRANSPARENT);
         // Drawer 화면(뷰) 객체 참조
         final View drawerViewLeft = (View) findViewById(R.id.drawerLeft);
-        final View drawerViewRight = (View) findViewById(R.id.drawerRight);
         // 드로어 화면을 열고 닫을 버튼 객체 참조
         Button btnOpenDrawerLeft = (Button) findViewById(R.id.btn_OpenDrawerLeft);
-        Button btnCloserDrawerLeft = (Button) findViewById(R.id.btn_CloseDrawerLeft);
-        Button btnOpenDrawerRight = (Button) findViewById(R.id.btn_OpenDrawerRight);
-        Button btnCloseDrawerRight = (Button) findViewById(R.id.btn_CloseDrawerRight);
 
 
         // 드로어 여는 버튼 리스너
@@ -141,40 +137,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 drawerLayout.openDrawer(drawerViewLeft);
             }
         });
-
-        // 드로어 닫는 버튼 리스너
-        btnCloserDrawerLeft.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
-                drawerLayout.closeDrawer(drawerViewLeft);
-            }
-        });
-
-        btnOpenDrawerRight.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
-                drawerLayout.openDrawer(drawerViewRight);
-            }
-        });
-
-        // 드로어 닫는 버튼 리스너
-        btnCloseDrawerRight.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
-                drawerLayout.closeDrawer(drawerViewRight);
-            }
-        });
-
     }
+    //아임샵 아이콘 클릭했을 때
     public void onButton1Clicked(View v){
         String packageName = "kr.co.dgb.dgbmh&gl=IE";
         try{
@@ -192,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     public void Clickrestaurant(View v){
 
     }
-    public void ClickCafe(View v){
+    public void ClickNear(View v){
 
     }
     public void ClickMart(View v){
