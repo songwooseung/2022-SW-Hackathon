@@ -5,7 +5,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#ffffff"
     tools:context=".MainActivity">
 
     <!--배경이 될 Layout-->
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="393dp"
-            android:background="#E6FBFD" />
+            android:background="#F8FEFF" />
 
         <Button
             android:id="@+id/buttonforSearch"
@@ -68,6 +68,13 @@
             android:layout_marginBottom="29dp"
             android:text="Button" />
 
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onButton1Clicked"
+            android:text="Button" />
+
     </RelativeLayout>
 
     <!--왼쪽 드로어 화면이 될 Layout-->
@@ -76,7 +83,7 @@
         android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#E2E9FD"
+        android:background="#F3F6FF"
         android:gravity="left">
 
         <Button

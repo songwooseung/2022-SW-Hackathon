@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -174,7 +175,20 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         });
 
     }
-
+    public void onButton1Clicked(View v){
+        String packageName = "kr.co.dgb.dgbmh&gl=IE";
+        try{
+            Intent intent = getPackageManager().getLaunchIntentForPackage(packageName);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            String url = "market://details?id=" + packageName;
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(i);
+        }
+    }
     public void Clickrestaurant(View v){
 
     }
