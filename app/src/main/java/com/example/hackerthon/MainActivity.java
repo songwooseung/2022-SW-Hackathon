@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -17,14 +16,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -36,15 +33,16 @@ import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapReverseGeoCoder;
 import net.daum.mf.map.api.MapView;
-import net.daum.mf.map.gen.KakaoMapLibraryAndroidMeta;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapReverseGeoCoder.ReverseGeoCodingResultListener, MapView.MapViewEventListener
 {
@@ -103,42 +101,35 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         //마커
         MapPOIItem marker = new MapPOIItem();
 
-        AssetManager assetManager = this.getAssets();
-        InputStream inputStream;
-        try
+        /*List<String[]> dataList = readFile("output.csv");
+        for (String[] data : dataList)
         {
-            inputStream = assetManager.open("merge.csv");
-            CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
-            List<String[]> dataList = reader.readAll();
-
-            for (String[] data : dataList)
+            if (data[8].equals("y")) continue;
+            if (data[0].equals("")) break;
+            if (Integer.parseInt(data[0]) >= 2)//index
             {
-                if (data[8].equals("y")) continue;
-                if (data[0].equals("")) break;
-                if (Integer.parseInt(data[0]) >= 2)//index
-                {
-                    MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(Double.parseDouble(data[8]), Double.parseDouble(data[7]));
-                    marker.setItemName(data[2]);
-                    marker.setTag(1);
-                    marker.setMapPoint(mapPoint);
-                    marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 사설 마커 모양 - 기본
-                    marker.setCustomImageResourceId(R.drawable.mar); // 마커 이미지.
-                    marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-                    //marker.setCustomImageAnchor(0.5f, 0.7f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
-                    marker.setSelectedMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커// 모양.
-                    marker.setCustomSelectedImageResourceId(R.drawable.mar2); // 마커 이미지.
-                    //marker.setCustomSelec(0.5f, 0.7f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+                MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(Double.parseDouble(data[8]), Double.parseDouble(data[7]));
+                marker.setItemName(data[2]);
+                marker.setTag(1);
+                marker.setMapPoint(mapPoint);
+                marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 사설 마커 모양 - 기본
+                marker.setCustomImageResourceId(R.drawable.mar); // 마커 이미지.
+                marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+                //marker.setCustomImageAnchor(0.5f, 0.7f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+                marker.setSelectedMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커// 모양.
+                marker.setCustomSelectedImageResourceId(R.drawable.mar2); // 마커 이미지.
+                //marker.setCustomSelec(0.5f, 0.7f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
 
-                    mMapView.addPOIItem(marker);
-                    Log.d("jhdroid_test", "data : " + Arrays.deepToString(data));
-                }
+                mMapView.addPOIItem(marker);
+                Log.d("jhdroid_test", "data : " + Arrays.deepToString(data));
             }
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        }*/
 
-        //검색
+        //검색 ///////////////////////////////////////////////
+
+        //파일 입력
+        List<String[]> mergeData = readFile("merge.csv");
+
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         EditText text = findViewById(R.id.searchData);
         Button btn = findViewById(R.id.button);
@@ -151,7 +142,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 Toast.makeText(MainActivity.this, text.getText(), Toast.LENGTH_LONG).show();
             }
         });
-
+        
+        //왼쪽
         // 전체화면인 DrawerLayout 객체 참조
         final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerLayout.setScrimColor(Color.TRANSPARENT);
@@ -182,17 +174,102 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 drawerLayout.closeDrawer(drawerViewLeft);
             }
         });
+    }
 
-        // 드로어 닫는 버튼 리스너
-        /*btnCloseDrawerRight.setOnClickListener(new View.OnClickListener()
+    List<String[]> readFile(String Filename)
+    {
+        AssetManager assetManager = this.getAssets();
+        InputStream inputStream;
+
+        List<String[]> dataList;
+        try
         {
-            @Override
-            public void onClick(View v)
+            inputStream = assetManager.open(Filename);
+            CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
+            dataList = reader.readAll();
+        } catch (IOException e)
+        {
+            dataList = new List<String[]>()
             {
-                imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
-                drawerLayout.closeDrawer(drawerViewRight);
-            }
-        });*/
+                @Override
+                public int size() {return 0;}
+
+                @Override
+                public boolean isEmpty() {return false;}
+
+                @Override
+                public boolean contains(@Nullable Object o) {return false;}
+
+                @NonNull
+                @Override
+                public Iterator<String[]> iterator() {return null;}
+
+                @NonNull
+                @Override
+                public Object[] toArray() {return new Object[0];}
+
+                @NonNull
+                @Override
+                public <T> T[] toArray(@NonNull T[] ts) {return null;}
+
+                @Override
+                public boolean add(String[] strings) {return false;}
+
+                @Override
+                public boolean remove(@Nullable Object o)
+                {return false;}
+
+                @Override
+                public boolean containsAll(@NonNull Collection<?> collection) {return false;}
+
+                @Override
+                public boolean addAll(@NonNull Collection<? extends String[]> collection) {return false;}
+
+                @Override
+                public boolean addAll(int i, @NonNull Collection<? extends String[]> collection) {return false;}
+
+                @Override
+                public boolean removeAll(@NonNull Collection<?> collection) {return false;}
+
+                @Override
+                public boolean retainAll(@NonNull Collection<?> collection) {return false;}
+
+                @Override
+                public void clear() {}
+
+                @Override
+                public String[] get(int i) {return new String[0];}
+
+                @Override
+                public String[] set(int i, String[] strings) {return new String[0];}
+
+                @Override
+                public void add(int i, String[] strings) {}
+
+                @Override
+                public String[] remove(int i) {return new String[0];}
+
+                @Override
+                public int indexOf(@Nullable Object o) {return 0;}
+
+                @Override
+                public int lastIndexOf(@Nullable Object o) {return 0;}
+
+                @NonNull
+                @Override
+                public ListIterator<String[]> listIterator() {return null;}
+
+                @NonNull
+                @Override
+                public ListIterator<String[]> listIterator(int i) {return null;}
+
+                @NonNull
+                @Override
+                public List<String[]> subList(int i, int i1) {return null;}
+            };
+            e.printStackTrace();
+        }
+        return dataList;
     }
 
     @Override
@@ -417,7 +494,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     public void onMapViewZoomLevelChanged(MapView mapView, int i)
     {
         Log.d("setzoomtest", Integer.toString(mMapView.getZoomLevel()));
-        if (mMapView.getZoomLevel() >= 3)
+        if (mMapView.getZoomLevel() > 3)
         {
             mMapView.setZoomLevel(3, false);
             mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
