@@ -157,12 +157,9 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         drawerLayout.setScrimColor(Color.TRANSPARENT);
         // Drawer 화면(뷰) 객체 참조
         final View drawerViewLeft = (View) findViewById(R.id.drawerLeft);
-        final View drawerViewRight = (View) findViewById(R.id.drawerRight);
         // 드로어 화면을 열고 닫을 버튼 객체 참조
         Button btnOpenDrawerLeft = (Button) findViewById(R.id.btn_OpenDrawerLeft);
         Button btnCloserDrawerLeft = (Button) findViewById(R.id.btn_CloseDrawerLeft);
-        Button btnOpenDrawerRight = (Button) findViewById(R.id.btn_OpenDrawerRight);
-        //Button btnCloseDrawerRight = (Button) findViewById(R.id.btn_CloseDrawerRight);
 
         // 드로어 여는 버튼 리스너
         btnOpenDrawerLeft.setOnClickListener(new View.OnClickListener()
@@ -183,16 +180,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             {
                 imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
                 drawerLayout.closeDrawer(drawerViewLeft);
-            }
-        });
-
-        btnOpenDrawerRight.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
-                drawerLayout.openDrawer(drawerViewRight);
             }
         });
 

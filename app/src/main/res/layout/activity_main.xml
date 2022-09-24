@@ -53,17 +53,6 @@
             android:layout_marginTop="42dp"
             android:text="Button" />
 
-        <Button
-            android:id="@+id/btn_OpenDrawerRight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="29dp"
-            android:text="Button" />
-
-
     </RelativeLayout>
 
     <!--왼쪽 드로어 화면이 될 Layout-->
@@ -114,24 +103,6 @@
             android:layout_marginTop="274dp"
             android:text="범주 2" />
     </RelativeLayout>
-
-
-    <!--오른쪽 드로어 화면이 될 Layout-->
-    <RelativeLayout
-        android:id="@+id/drawerRight"
-        android:layout_width="250dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="right"
-        android:background="#ffffff"
-        android:gravity="right">
-
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </RelativeLayout>
-
 
 
 </androidx.drawerlayout.widget.DrawerLayout>
