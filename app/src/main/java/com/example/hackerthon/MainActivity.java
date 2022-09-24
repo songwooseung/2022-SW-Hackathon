@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.location.LocationManager;
@@ -30,15 +29,9 @@ import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapReverseGeoCoder;
 import net.daum.mf.map.api.MapView;
-import net.daum.mf.map.gen.KakaoMapLibraryAndroidMeta;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapReverseGeoCoder.ReverseGeoCodingResultListener
 {
@@ -112,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         //검색
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         EditText text = findViewById(R.id.searchData);
-        Button btn = findViewById(R.id.button);
+        Button btn = findViewById(R.id.buttonforSearch);
         btn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -134,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         Button btnCloserDrawerLeft = (Button) findViewById(R.id.btn_CloseDrawerLeft);
         Button btnOpenDrawerRight = (Button) findViewById(R.id.btn_OpenDrawerRight);
         Button btnCloseDrawerRight = (Button) findViewById(R.id.btn_CloseDrawerRight);
+
 
         // 드로어 여는 버튼 리스너
         btnOpenDrawerLeft.setOnClickListener(new View.OnClickListener()
@@ -177,6 +171,22 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 drawerLayout.closeDrawer(drawerViewRight);
             }
         });
+
+    }
+
+    public void Clickrestaurant(View v){
+
+    }
+    public void ClickCafe(View v){
+
+    }
+    public void ClickMart(View v){
+
+    }
+    public void ClickFacility(View v){
+
+    }
+    public void Clickguitar(View v){
 
     }
 
