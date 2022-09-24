@@ -121,14 +121,21 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         //검색
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         EditText text = findViewById(R.id.searchData);
-        Button btn = findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener()
+        Button searchBtn = findViewById(R.id.button);
+        searchBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
                 imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
-                Toast.makeText(MainActivity.this, text.getText(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(MainActivity.this, text.getText(), Toast.LENGTH_LONG).show();//alert
+                String toFind = String.valueOf(text.getText());
+                System.out.println(toFind);//checked
+                for(String[] dataRow:mergeData)
+                {
+                    
+                }
+
             }
         });
 
