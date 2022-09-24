@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -127,33 +128,59 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
         // 전체화면인 DrawerLayout 객체 참조
         final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
         // Drawer 화면(뷰) 객체 참조
-        final View drawerView = (View) findViewById(R.id.drawerLeft);
+        final View drawerViewLeft = (View) findViewById(R.id.drawerLeft);
+        final View drawerViewRight = (View) findViewById(R.id.drawerRight);
         // 드로어 화면을 열고 닫을 버튼 객체 참조
-        Button btnOpenDrawer = (Button) findViewById(R.id.btn_OpenDrawerLeft);
-        Button btnCloseDrawer = (Button) findViewById(R.id.btn_CloseDrawerLeft);
+        Button btnOpenDrawerLeft = (Button) findViewById(R.id.btn_OpenDrawerLeft);
+        Button btnCloserDrawerLeft = (Button) findViewById(R.id.btn_CloseDrawerLeft);
+        Button btnOpenDrawerRight = (Button) findViewById(R.id.btn_OpenDrawerRight);
+        Button btnCloseDrawerRight = (Button) findViewById(R.id.btn_CloseDrawerRight);
 
         // 드로어 여는 버튼 리스너
-        btnOpenDrawer.setOnClickListener(new View.OnClickListener()
+        btnOpenDrawerLeft.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
-                drawerLayout.openDrawer(drawerView);
+                drawerLayout.openDrawer(drawerViewLeft);
             }
         });
 
         // 드로어 닫는 버튼 리스너
-        btnCloseDrawer.setOnClickListener(new View.OnClickListener()
+        btnCloserDrawerLeft.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
-                drawerLayout.closeDrawer(drawerView);
+                drawerLayout.closeDrawer(drawerViewLeft);
             }
         });
+
+        btnOpenDrawerRight.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
+                drawerLayout.openDrawer(drawerViewRight);
+            }
+        });
+
+        // 드로어 닫는 버튼 리스너
+        btnCloseDrawerRight.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
+                drawerLayout.closeDrawer(drawerViewRight);
+            }
+        });
+
     }
 
     @Override
