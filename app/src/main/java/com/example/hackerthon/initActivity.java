@@ -33,8 +33,8 @@ public class initActivity extends AppCompatActivity
         Glide.with(this).load(R.raw.open).into(startIMAGE);
         //layout = findViewById(R.id.layout);
 
-        AssetManager assetManager = this.getAssets();
-        List<String[]> dataList = CSVGetter(assetManager);
+/*        AssetManager assetManager = this.getAssets();
+        List<String[]> dataList = CSVGetter(assetManager);*/
 
         Intent intent = new Intent(initActivity.this, MainActivity.class); //화면 전환
 
@@ -44,19 +44,21 @@ public class initActivity extends AppCompatActivity
             @Override
             public void run()
             {
+                /*
                 intent.putExtra("size", dataList.size());
                 for (int i = 0; i < dataList.size(); i++)
                 {
                     intent.putExtra(Integer.toString(i), dataList.get(i));
-                }
+                }*/
+
                 startActivity(intent);
+
                 finish();
             }
         }, 5000); //딜레이 타임 조절*/
-
-
     }
-
+}
+    /*
     public static List<String[]> CSVGetter(AssetManager manager)
     {
         List<String[]> dataList;
@@ -74,4 +76,4 @@ public class initActivity extends AppCompatActivity
 
         return dataList;
     }
-}
+}*/

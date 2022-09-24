@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.location.LocationManager;
@@ -16,8 +17,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +29,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.opencsv.CSVReader;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -44,7 +50,11 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 {
     private static final String LOG_TAG = "MainActivity";
     MapView mMapView;
-    private final String FILENAME = "output.csv";
+
+    private static final String FILE_CONVIN = "Convenience.csv";
+    private static final String FILE_Food = "Food.csv";
+    private static final String FILE_Guitar = "Guitar.csv";
+    private static final String FILE_Mart = "Mart.csv";
 
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
@@ -56,13 +66,24 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ArrayList<String[]> dataList = new ArrayList<String[]>();
-        int Size = getIntent().getIntExtra("size", 0);
-        for (int i = 0; i < Size; i++)
+        ArrayList<String[]> dataList_convin = new ArrayList<String[]>();
+
+        //int Size = getIntent().getIntExtra("size",0);
+        /*
+        for(int i=0;i<Size;i++)
         {
             dataList.add(getIntent().getExtras().getStringArray(Integer.toString(i)));
-        }
+        }*/
 
+        /*ListView listView = findViewById(R.id.listView);
+        List<String> lst = new ArrayList<String>();
+        lst.add("사과");
+        lst.add(" 딸기");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.right_listview, lst);
+        listView.setAdapter(adapter);
+*/
+        //mapview
         mMapView = new MapView(this);
         ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
         mapViewContainer.addView(mMapView);
@@ -70,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         //mMapView.setDaumMapApiKey(MapApiConst.DAUM_MAPS_ANDROID_APP_API_KEY);
         mMapView.setCurrentLocationEventListener(this);
         mMapView.setMapViewEventListener(this);
-        //?
+        //
 
         if (!checkLocationServicesStatus())
             showDialogForLocationServiceSetting();
@@ -78,38 +99,44 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             checkRunTimePermission();
 
         //mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-        
+
         //마커
         MapPOIItem marker = new MapPOIItem();
 
-        //지도 mark for문으로 구하기
-        String[] data;
-        for (int i = 0; i < dataList.size(); i += 100)
+        AssetManager assetManager = this.getAssets();
+        InputStream inputStream;
+        try
         {
-            data = dataList.get(i);
-            Log.d("jhdroid_test", "data : " + Arrays.deepToString(data));
-            System.out.println("data : " + data[0] + "::" + Arrays.deepToString(data));
-            if (data[0].equals("") || data[8].equals("y")) continue;
-            else
+            inputStream = assetManager.open("output.csv");
+            CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
+            List<String[]> dataList = reader.readAll();
+
+            for (String[] data : dataList)
             {
-                MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(Double.parseDouble(data[8]), Double.parseDouble(data[7]));
-                marker.setItemName(data[2]);
-                marker.setTag(1);
-                marker.setMapPoint(mapPoint);
-                marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 사설 마커 모양 - 기본
-                marker.setCustomImageResourceId(R.drawable.mar); // 마커 이미지.
-                marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-                //marker.setCustomImageAnchor(0.5f, 0.7f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
-                marker.setSelectedMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커// 모양.
-                marker.setCustomSelectedImageResourceId(R.drawable.mar2); // 마커 이미지.
-                //marker.setCustomSelec(0.5f, 0.7f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+                if(data[8].equals("y")) continue;
+                if(Integer.parseInt(data[0])>=2)//index
+                {
+                    MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(Double.parseDouble(data[8]), Double.parseDouble(data[7]));
+                    marker.setItemName(data[2]);
+                    marker.setTag(1);
+                    marker.setMapPoint(mapPoint);
+                    marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 사설 마커 모양 - 기본
+                    marker.setCustomImageResourceId(R.drawable.mar); // 마커 이미지.
+                    marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+                    //marker.setCustomImageAnchor(0.5f, 0.7f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+                    marker.setSelectedMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커// 모양.
+                    marker.setCustomSelectedImageResourceId(R.drawable.mar2); // 마커 이미지.
+                    //marker.setCustomSelec(0.5f, 0.7f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
 
-                mMapView.addPOIItem(marker);
-                Log.d("jhdroid_test", "data : " + Arrays.deepToString(data));
-                System.out.println("data : " + Arrays.deepToString(data));
+                    mMapView.addPOIItem(marker);
+                    Log.d("jhdroid_test", "data : " + Arrays.deepToString(data));
+                }
             }
+        } catch (IOException e)
+        {
+            e.printStackTrace();
         }
-
+        
         //검색
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         EditText text = findViewById(R.id.searchData);
@@ -134,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         Button btnOpenDrawerLeft = (Button) findViewById(R.id.btn_OpenDrawerLeft);
         Button btnCloserDrawerLeft = (Button) findViewById(R.id.btn_CloseDrawerLeft);
         Button btnOpenDrawerRight = (Button) findViewById(R.id.btn_OpenDrawerRight);
-        Button btnCloseDrawerRight = (Button) findViewById(R.id.btn_CloseDrawerRight);
+        //Button btnCloseDrawerRight = (Button) findViewById(R.id.btn_CloseDrawerRight);
 
         // 드로어 여는 버튼 리스너
         btnOpenDrawerLeft.setOnClickListener(new View.OnClickListener()
@@ -169,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         });
 
         // 드로어 닫는 버튼 리스너
-        btnCloseDrawerRight.setOnClickListener(new View.OnClickListener()
+        /*btnCloseDrawerRight.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -177,8 +204,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
                 drawerLayout.closeDrawer(drawerViewRight);
             }
-        });
-
+        });*/
     }
 
     @Override
@@ -388,23 +414,21 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     }
 
     @Override
-    public void onMapViewInitialized(MapView mapView)
-    {
+    public void onMapViewInitialized(MapView mapView) {
 
     }
 
     @Override
-    public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint)
-    {
+    public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint) {
+
         mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
     }
 
     @Override
-    public void onMapViewZoomLevelChanged(MapView mapView, int i)
-    {
+    public void onMapViewZoomLevelChanged(MapView mapView, int i) {
         Log.d("setzoomtest", Integer.toString(mMapView.getZoomLevel()));
-        if (mMapView.getZoomLevel() != 2)
-        {
+        if(mMapView.getZoomLevel() != 2 ) {
+
             mMapView.setZoomLevel(2, false);
             mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
         }
@@ -412,38 +436,52 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     }
 
     @Override
-    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint)
-    {
+    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
 
     }
 
     @Override
-    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint)
-    {
+    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
 
     }
 
     @Override
-    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint)
-    {
+    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
 
     }
 
     @Override
-    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint)
-    {
+    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
 
     }
 
     @Override
-    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint)
-    {
+    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
 
     }
 
     @Override
-    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint)
-    {
+    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
 
+    }
+
+
+    //CSVGetter
+    public static List<String[]> CSVGetter(AssetManager manager, String FILENAME)
+    {
+        List<String[]> dataList;
+        try
+        {
+            InputStream inputStream = manager.open(FILENAME);
+            CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
+            dataList = reader.readAll();
+        } catch (IOException e)
+        {
+            dataList = new ArrayList<String[]>();
+            dataList.add(new String[]{"error", "-1"});
+            e.printStackTrace();
+        }
+
+        return dataList;
     }
 }
