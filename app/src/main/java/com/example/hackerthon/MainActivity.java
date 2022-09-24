@@ -142,9 +142,13 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 //Toast.makeText(MainActivity.this, text.getText(), Toast.LENGTH_LONG).show();//alert
                 String toFind = String.valueOf(text.getText());
                 System.out.println(toFind);//checked
+                List<String[]> foundList = new ArrayList<>();
                 for(String[] dataRow:mergeData)
                 {
-                    
+                    if(dataRow[2].matches(toFind))
+                    {
+                        foundList.add(dataRow);
+                    }
                 }
 
             }
@@ -196,84 +200,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             dataList = reader.readAll();
         } catch (IOException e)
         {
-            dataList = new List<String[]>()
-            {
-                @Override
-                public int size() {return 0;}
-
-                @Override
-                public boolean isEmpty() {return false;}
-
-                @Override
-                public boolean contains(@Nullable Object o) {return false;}
-
-                @NonNull
-                @Override
-                public Iterator<String[]> iterator() {return null;}
-
-                @NonNull
-                @Override
-                public Object[] toArray() {return new Object[0];}
-
-                @NonNull
-                @Override
-                public <T> T[] toArray(@NonNull T[] ts) {return null;}
-
-                @Override
-                public boolean add(String[] strings) {return false;}
-
-                @Override
-                public boolean remove(@Nullable Object o)
-                {return false;}
-
-                @Override
-                public boolean containsAll(@NonNull Collection<?> collection) {return false;}
-
-                @Override
-                public boolean addAll(@NonNull Collection<? extends String[]> collection) {return false;}
-
-                @Override
-                public boolean addAll(int i, @NonNull Collection<? extends String[]> collection) {return false;}
-
-                @Override
-                public boolean removeAll(@NonNull Collection<?> collection) {return false;}
-
-                @Override
-                public boolean retainAll(@NonNull Collection<?> collection) {return false;}
-
-                @Override
-                public void clear() {}
-
-                @Override
-                public String[] get(int i) {return new String[0];}
-
-                @Override
-                public String[] set(int i, String[] strings) {return new String[0];}
-
-                @Override
-                public void add(int i, String[] strings) {}
-
-                @Override
-                public String[] remove(int i) {return new String[0];}
-
-                @Override
-                public int indexOf(@Nullable Object o) {return 0;}
-
-                @Override
-                public int lastIndexOf(@Nullable Object o) {return 0;}
-
-                @NonNull
-                @Override
-                public ListIterator<String[]> listIterator() {return null;}
-
-                @NonNull
-                @Override
-                public ListIterator<String[]> listIterator(int i) {return null;}
-
-                @NonNull
-                @Override
-                public List<String[]> subList(int i, int i1) {return null;}
-            };
+            dataList = new ArrayList<>();
             e.printStackTrace();
         }
         return dataList;
