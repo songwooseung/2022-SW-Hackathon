@@ -15,29 +15,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/map_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="-238dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="-1dp"
-            android:background="#F8FEFF" />
-
         <Button
-            android:id="@+id/buttonforSearch"
-            android:layout_width="71dp"
-            android:layout_height="91dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="17dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="2dp"
-            android:background="#00ff0000"
-            android:drawableBottom="@drawable/arrowxml"
-            tools:ignore="SpeakableTextPresentCheck" />
+        android:id="@+id/buttonorSearch"
+        android:layout_width="71dp"
+        android:layout_height="91dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="2dp"
+        android:background="#00ff0000"
+        android:drawableBottom="@drawable/arrowxml"
+        tools:ignore="SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="248dp"
@@ -56,6 +45,7 @@
                 tools:ignore="TouchTargetSizeCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
+
         <Button
             android:id="@+id/btn_OpenDrawerLeft"
             android:layout_width="62dp"
@@ -68,6 +58,18 @@
             android:backgroundTint="#00ff0000"
             android:drawableTop="@drawable/filxml"
             tools:ignore="SpeakableTextPresentCheck" />
+
+        <RelativeLayout
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="-238dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="-1dp"
+            android:background="#F8FEFF" />
+
 
     </RelativeLayout>
 
@@ -185,7 +187,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/buttonforIM"
+            android:id="@+id/buttonforSearch"
             android:layout_width="108dp"
             android:layout_height="105dp"
             android:layout_marginStart="30dp"
@@ -198,6 +200,5 @@
             android:text="IM샵 " />
 
     </RelativeLayout>
-
 
 </androidx.drawerlayout.widget.DrawerLayout>

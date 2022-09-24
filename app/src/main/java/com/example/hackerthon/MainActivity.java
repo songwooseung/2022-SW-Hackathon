@@ -10,6 +10,7 @@ import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -21,7 +22,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -29,6 +29,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.opencsv.CSVReader;
 
+import net.daum.mf.map.api.CameraUpdateFactory;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapReverseGeoCoder;
@@ -38,11 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapReverseGeoCoder.ReverseGeoCodingResultListener, MapView.MapViewEventListener
 {
@@ -53,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private static final String FILE_Food = "Food.csv";
     private static final String FILE_Guitar = "Guitar.csv";
     private static final String FILE_Mart = "Mart.csv";
+    private static final String FILE_Merge = "merge.csv";
 
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
@@ -64,7 +62,20 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ArrayList<String[]> dataList_convin = new ArrayList<String[]>();
+        AssetManager assetManager = this.getAssets();
+        //ArrayList<String[]> dataList_convin = new ArrayList<String[]>();
+        MapPOIItem marker = new MapPOIItem();
+
+        List<String[]> dataList_Convin = CSVGetter(assetManager, FILE_CONVIN);
+        List<String[]> dataList_Food = CSVGetter(assetManager, FILE_Food);
+        List<String[]> dataList_Guitar = CSVGetter(assetManager, FILE_Guitar);
+        List<String[]> dataList_Mart = CSVGetter(assetManager, FILE_Mart);
+        List<String[]> dataList_Merge = CSVGetter(assetManager, FILE_Merge);
+
+        for (String[] s : dataList_Merge)
+        {
+            System.out.println("s: " + s[0] + s[1] + s[2]);
+        }
 
         //int Size = getIntent().getIntExtra("size",0);
         /*
@@ -99,9 +110,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         //mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
 
         //마커
-        MapPOIItem marker = new MapPOIItem();
 
-        /*List<String[]> dataList = readFile("output.csv");
+        /*
         for (String[] data : dataList)
         {
             if (data[8].equals("y")) continue;
@@ -128,32 +138,65 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         //검색 ///////////////////////////////////////////////
 
         //파일 입력
-        List<String[]> mergeData = readFile("merge.csv");
+        //List<String[]> mergeData = readFile("merge.csv");
 
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         EditText text = findViewById(R.id.searchData);
-        Button searchBtn = findViewById(R.id.button);
+        Button searchBtn = findViewById(R.id.buttonforSearch);
         searchBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
+                mMapView.removeAllPOIItems();
+
                 imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
                 //Toast.makeText(MainActivity.this, text.getText(), Toast.LENGTH_LONG).show();//alert
                 String toFind = String.valueOf(text.getText());
-                System.out.println(toFind);//checked
-                List<String[]> foundList = new ArrayList<>();
-                for(String[] dataRow:mergeData)
+                System.out.println(toFind);
+                if (toFind.equals(""))
                 {
-                    if(dataRow[2].matches(toFind))
+                    Toast.makeText(MainActivity.this, "검색어를 입력해주세요", Toast.LENGTH_LONG).show();//alert
+                    return;
+                }
+                List<String[]> foundList = new ArrayList<>();
+                for (String[] dataRow : dataList_Merge)
+                {
+                    if (dataRow[2].contains(toFind))
                     {
+                        System.out.println(dataRow[1] + " " + dataRow[2]);
                         foundList.add(dataRow);
                     }
                 }
+                if (foundList.size() == 0)
+                    Toast.makeText(MainActivity.this, "없습니당", Toast.LENGTH_LONG).show();//alert
+                else
+                {
+                    for (String[] s : foundList)
+                    {
+                        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(Double.parseDouble(s[8]), Double.parseDouble(s[7]));
+                        marker.setItemName(s[2]);
+                        marker.setTag(1);
+                        marker.setMapPoint(mapPoint);
+                        marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 사설 마커 모양 - 기본
+                        marker.setCustomImageResourceId(R.drawable.mar); // 마커 이미지.
+                        marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+                        //marker.setCustomImageAnchor(0.5f, 0.7f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+                        marker.setSelectedMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커// 모양.
+                        marker.setCustomSelectedImageResourceId(R.drawable.mar2); // 마커 이미지.
+                        //marker.setCustomSelec(0.5f, 0.7f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
 
+                        mMapView.addPOIItem(marker);
+                    }
+                    if (foundList.size() == 1)
+                    {
+                        MapPoint mp = MapPoint.mapPointWithGeoCoord(Double.parseDouble(foundList.get(0)[8]), Double.parseDouble(foundList.get(0)[7]));
+                        mMapView.moveCamera(CameraUpdateFactory.newMapPoint(mp));
+                    }
+                }
             }
         });
-        
+
         //왼쪽
         // 전체화면인 DrawerLayout 객체 참조
         final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -162,7 +205,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         final View drawerViewLeft = (View) findViewById(R.id.drawerLeft);
         // 드로어 화면을 열고 닫을 버튼 객체 참조
         Button btnOpenDrawerLeft = (Button) findViewById(R.id.btn_OpenDrawerLeft);
-        Button btnCloserDrawerLeft = (Button) findViewById(R.id.btn_CloseDrawerLeft);
 
         // 드로어 여는 버튼 리스너
         btnOpenDrawerLeft.setOnClickListener(new View.OnClickListener()
@@ -174,36 +216,49 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 drawerLayout.openDrawer(drawerViewLeft);
             }
         });
-
-        // 드로어 닫는 버튼 리스너
-        btnCloserDrawerLeft.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
-                drawerLayout.closeDrawer(drawerViewLeft);
-            }
-        });
     }
 
-    List<String[]> readFile(String Filename)
+    //아임샵 아이콘 클릭했을 때
+    public void onButton1Clicked(View v)
     {
-        AssetManager assetManager = this.getAssets();
-        InputStream inputStream;
-
-        List<String[]> dataList;
+        String packageName = "kr.co.dgb.dgbmh&gl=IE";
         try
         {
-            inputStream = assetManager.open(Filename);
-            CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
-            dataList = reader.readAll();
-        } catch (IOException e)
+            Intent intent = getPackageManager().getLaunchIntentForPackage(packageName);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } catch (Exception e)
         {
-            dataList = new ArrayList<>();
             e.printStackTrace();
+            String url = "market://details?id=" + packageName;
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(i);
         }
-        return dataList;
+    }
+
+    public void Clickrestaurant(View v)
+    {
+
+    }
+
+    public void ClickNear(View v)
+    {
+
+    }
+
+    public void ClickMart(View v)
+    {
+
+    }
+
+    public void ClickFacility(View v)
+    {
+
+    }
+
+    public void Clickguitar(View v)
+    {
+
     }
 
     @Override
@@ -239,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     public void onCurrentLocationUpdate(MapView mapView, MapPoint currentLocation, float accuracyInMeters)
     {
         MapPoint.GeoCoordinate mapPointGeo = currentLocation.getMapPointGeoCoord();
-        Log.i(LOG_TAG, String.format("MapView onCurrentLocationUpdate (%f,%f) accuracy (%f)", mapPointGeo.latitude, mapPointGeo.longitude, accuracyInMeters));
+        //Log.i(LOG_TAG, String.format("MapView onCurrentLocationUpdate (%f,%f) accuracy (%f)", mapPointGeo.latitude, mapPointGeo.longitude, accuracyInMeters));
     }
 
 
@@ -421,7 +476,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     @Override
     public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint)
     {
-        mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+        //mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
     }
 
     @Override
