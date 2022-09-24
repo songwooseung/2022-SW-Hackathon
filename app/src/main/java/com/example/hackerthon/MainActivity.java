@@ -107,14 +107,15 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         InputStream inputStream;
         try
         {
-            inputStream = assetManager.open("output.csv");
+            inputStream = assetManager.open("merge.csv");
             CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
             List<String[]> dataList = reader.readAll();
 
             for (String[] data : dataList)
             {
-                if(data[8].equals("y")) continue;
-                if(Integer.parseInt(data[0])>=2)//index
+                if (data[8].equals("y")) continue;
+                if (data[0].equals("")) break;
+                if (Integer.parseInt(data[0]) >= 2)//index
                 {
                     MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(Double.parseDouble(data[8]), Double.parseDouble(data[7]));
                     marker.setItemName(data[2]);
@@ -136,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         {
             e.printStackTrace();
         }
-        
+
         //검색
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         EditText text = findViewById(R.id.searchData);
@@ -414,55 +415,57 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     }
 
     @Override
-    public void onMapViewInitialized(MapView mapView) {
+    public void onMapViewInitialized(MapView mapView)
+    {
 
     }
 
     @Override
-    public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint) {
-
+    public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint)
+    {
         mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
     }
 
     @Override
-    public void onMapViewZoomLevelChanged(MapView mapView, int i) {
+    public void onMapViewZoomLevelChanged(MapView mapView, int i)
+    {
         Log.d("setzoomtest", Integer.toString(mMapView.getZoomLevel()));
-        if(mMapView.getZoomLevel() != 2 ) {
-
-            mMapView.setZoomLevel(2, false);
+        if (mMapView.getZoomLevel() >= 3)
+        {
+            mMapView.setZoomLevel(3, false);
             mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
         }
 
     }
 
     @Override
-    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
-
+    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint)
+    {
     }
 
     @Override
-    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
-
+    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint)
+    {
     }
 
     @Override
-    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
-
+    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint)
+    {
     }
 
     @Override
-    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
-
+    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint)
+    {
     }
 
     @Override
-    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
-
+    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint)
+    {
     }
 
     @Override
-    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
-
+    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint)
+    {
     }
 
 
