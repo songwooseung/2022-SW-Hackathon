@@ -35,7 +35,7 @@
         </activity> <!-- 네이티브 앱 키 추가 -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
-            android:value="7235459b1d1f233eaaa5e8dbc3e27974" />
+            android:value="81896c0fcf4ccc929445c63d9e068366"/>
     </application>
 
 </manifest>
