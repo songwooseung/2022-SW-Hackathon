@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.location.LocationManager;
@@ -26,6 +27,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.opencsv.CSVReader;
+
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapReverseGeoCoder;
@@ -44,7 +47,14 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 {
     private static final String LOG_TAG = "MainActivity";
     MapView mMapView;
-    private final String FILENAME = "output.csv";
+
+    private static final String FILE_CONVIN = "Convenience.csv";
+    private static final String FILE_Food = "Food.csv";
+    private static final String FILE_Guitar = "Guitar.csv";
+    private static final String FILE_Mart = "Mart.csv";
+
+
+
 
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
@@ -56,12 +66,14 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ArrayList<String[]> dataList = new ArrayList<String[]>();
+        ArrayList<String[]> dataList_convin = new ArrayList<String[]>();
+
         int Size = getIntent().getIntExtra("size",0);
+        /*
         for(int i=0;i<Size;i++)
         {
             dataList.add(getIntent().getExtras().getStringArray(Integer.toString(i)));
-        }
+        }*/
 
         mMapView = new MapView(this);
         ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
@@ -84,7 +96,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 
         //지도 mark for문으로 구하기
         String[] data;
-        for (int i = 0; i < dataList.size(); i += 100)
+
+        /*for (int i = 0; i < dataList.size(); i += 100)
         {
             data = dataList.get(i);
             Log.d("jhdroid_test", "data : " + Arrays.deepToString(data));
@@ -108,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                 Log.d("jhdroid_test", "data : " + Arrays.deepToString(data));
                 System.out.println("data : " + Arrays.deepToString(data));
             }
-        }
+        }*/
 
         //검색
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -437,5 +450,25 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     @Override
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
 
+    }
+
+
+    //CSVGetter
+    public static List<String[]> CSVGetter(AssetManager manager, String FILENAME)
+    {
+        List<String[]> dataList;
+        try
+        {
+            InputStream inputStream = manager.open(FILENAME);
+            CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
+            dataList = reader.readAll();
+        } catch (IOException e)
+        {
+            dataList = new ArrayList<String[]>();
+            dataList.add(new String[]{"error", "-1"});
+            e.printStackTrace();
+        }
+
+        return dataList;
     }
 }
