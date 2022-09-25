@@ -312,7 +312,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
 //        Toast.makeText(LocationDemoActivity.this, "Reverse Geo-coding : " + result, Toast.LENGTH_SHORT).show();
     }
 
-
     /*
      * ActivityCompat.requestPermissions를 사용한 퍼미션 요청의 결과를 리턴받는 메소드입니다.
      */
@@ -507,7 +506,6 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint)
     {
     }
-
 
     //CSVGetter
     public static List<String[]> CSVGetter(AssetManager manager, String FILENAME)
