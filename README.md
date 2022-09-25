@@ -30,13 +30,21 @@ Team Member : 김진현 이상희 송우승 주보경
 **안드로이드 카카오맵 API 개발자의 해시 키가 없으면 지도 작동이 안됩니다!**
 
 **3.파이썬 기반 데이터 크롤링**  
+![image](https://user-images.githubusercontent.com/87298145/192125287-1354fa35-30bc-4a95-b9d5-09daa005e4f6.png)
 파이썬 기반으로 위치와 상호명 사업자 번호 등을 읽어와 엑셀 파일로 저장
-- 카테고리 별로 나누어 저장됨
+
+<img width="1475" alt="image" src="https://user-images.githubusercontent.com/102018082/192125850-bdf2df18-1e65-40bd-954e-c278b2f209a6.png">
+필요없는 개인 사업자 ( 개인택시 등 제외 작업 )
 - 음식점
 - 편의시설
 - 편의점/마트
 - 기타
-![image](https://user-images.githubusercontent.com/87298145/192125287-1354fa35-30bc-4a95-b9d5-09daa005e4f6.png)
+
+
+![image](https://user-images.githubusercontent.com/102018082/192125887-053005d4-af96-4926-b826-63b86eb0b054.png)
+안드로이드 앱에서 위치를 받아 올 경우 로딩시간이 너무 오래걸려서 카카오 API를 활용하여 gps좌표를 받아왔습니다.
+빅데이터의 주소값은 시도, 구, 길과 호수등이 ',와 스페이스바' 등으로 구별 되어 있지 않아, 일부 데이터는 수작업으로 진행 하였습니다.
+
 
 * * *
 **시연영상**
